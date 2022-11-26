@@ -4,21 +4,26 @@
     const socket = io();
 
     let uname;
+    let id;
 
     app.querySelector(".join-screen #join-user").addEventListener('click', function(){
         let username  = app.querySelector(".join-screen #username").value;
-        if(username.length == 0){ return; }
-        socket.emit("newuser", username);
+        let server = app.querySelector(".join-screen #serverId").value;
+        if(username.length == 0 || server.length == 0){ return; }
+        socket.emit("newuser", username, server);
         uname = username;
+        id = server;
         app.querySelector(".join-screen").classList.remove("active");
         app.querySelector(".chat-screen").classList.add("active");
     });
     app.querySelector(".join-screen").addEventListener('keydown', function(event){
         if(event.key == "Enter"){
             let username  = app.querySelector(".join-screen #username").value;
-            if(username.length == 0){ return; }
-            socket.emit("newuser", username);
+            let server = app.querySelector(".join-screen #serverId").value;
+            if(username.length == 0 || server.length == 0){ return; }
+            socket.emit("newuser", username, server);
             uname = username;
+            id = server;
             app.querySelector(".join-screen").classList.remove("active");
             app.querySelector(".chat-screen").classList.add("active");
         }
@@ -29,10 +34,12 @@
         if(message.length == 0){ return; }
         renderMessage("my", {
             username: uname,
+            serverId: id,
             text: message
         });
         socket.emit("chat", {
             username: uname,
+            serverId: id,
             text: message
         });
         app.querySelector(".chat-screen #message-input").value = "";
@@ -43,10 +50,12 @@
             if(message.length == 0){ return; }
             renderMessage("my", {
                 username: uname,
+                serverId: id,
                 text: message
             });
             socket.emit("chat", {
                 username: uname,
+                serverId: id,
                 text: message
             });
             app.querySelector(".chat-screen #message-input").value = "";
@@ -54,7 +63,7 @@
     });
 
     app.querySelector(".chat-screen #exit-chat").addEventListener("click", function(){
-        socket.emit("exituser", uname);
+        socket.emit("exituser", uname, id);
         window.location.href = window.location.href;
     });
 
@@ -78,7 +87,7 @@
                 </div>
             `;
             messageContainer.appendChild(el);
-        }else if(type == "other"){
+        }else if(type == "other" && message.serverId == id){
             let el = document.createElement("div");
             el.setAttribute("class", "message other-message");
             el.innerHTML = `
@@ -88,10 +97,10 @@
                 </div>
             `;
             messageContainer.appendChild(el);
-        }else if(type == "update"){
+        }else if(type == "update" && message.serverId == id){
             let el = document.createElement("div");
             el.setAttribute("class", "update");
-            el.innerText = message;
+            el.innerText = message.text;
             messageContainer.appendChild(el);
         }
         // scroll chat to end
