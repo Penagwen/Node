@@ -18,8 +18,14 @@ io.on("connection", function(socket){
     socket.on("chat", function(message){
         socket.broadcast.emit("chat", message);
     });
+    socket.on('disconnect', function(){
+        let message = disconect();
+        socket.broadcast.emit("update", {text:message.username + " left the conversation", serverId: message.id});
+    });
 });
 
-server.listen(5000, '0.0.0.0', function() {
-    console.log('Listening to port:  ' + 5000);
+
+const port = 4856;
+server.listen(4856, '0.0.0.0', function() {
+    console.log('Listening to port:  ' + port + ' go to 10.0.0.52:' + port);
 });

@@ -67,6 +67,19 @@
         window.location.href = window.location.href;
     });
 
+    let onScreen = true;
+    document.onvisibilitychange = () => {
+        if(document.hidden){
+            onScreen = false;
+        }else{
+            onScreen = true;
+        }
+    }
+
+    function disconect(){
+        return {username:uname, id:id};
+    }
+
     socket.on("update", function(update){
         renderMessage("update", update);
     });
@@ -88,6 +101,7 @@
             `;
             messageContainer.appendChild(el);
         }else if(type == "other" && message.serverId == id){
+            if(!onScreen){ alert('New Message'); }
             let el = document.createElement("div");
             el.setAttribute("class", "message other-message");
             el.innerHTML = `
