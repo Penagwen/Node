@@ -18,10 +18,6 @@ io.on("connection", function(socket){
     socket.on("chat", function(message){
         socket.broadcast.emit("chat", message);
     });
-    socket.on('disconnect', function(){
-        let message = disconect();
-        socket.broadcast.emit("update", {text:message.username + " left the conversation", serverId: message.id});
-    });
 });
 
 

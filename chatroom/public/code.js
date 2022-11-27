@@ -76,10 +76,6 @@
         }
     }
 
-    function disconect(){
-        return {username:uname, id:id};
-    }
-
     socket.on("update", function(update){
         renderMessage("update", update);
     });
