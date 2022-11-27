@@ -22,6 +22,6 @@ io.on("connection", function(socket){
 
 
 const port = 4856;
-server.listen(4856, '0.0.0.0', function() {
+server.listen(port, '0.0.0.0', function() {
     console.log('Listening to port:  ' + port + ' go to 10.0.0.52:' + port);
 });
