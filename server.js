@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const { Socket } = require("socket.io");
 
 const app = express();
 const server = require("http").createServer(app);
@@ -22,6 +23,4 @@ io.on("connection", function(socket){
 
 
 const port = 4856;
-server.listen(port, '0.0.0.0', function() {
-    console.log('Listening to port:  ' + port + ' go to 10.0.0.52:' + port);
-});
+server.listen(port, '0.0.0.0');
